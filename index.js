@@ -31,11 +31,15 @@ function rederStoreItem() {
     iconItem.append(imgageItem);
     let buttonItem = document.createElement("button");
     buttonItem.textContent = "Add to cart";
-
+    let clickedButtonItem=false
     buttonItem.addEventListener("click", function () {
+      if(!clickedButtonItem){
       state.storeItem[i].quantity += 1;
       renderShoppingItem(i);
       totalPrice();
+      }
+     clickedButtonItem=true
+       
     });
     listItem.append(iconItem, buttonItem);
     storeItemList.append(listItem);
