@@ -31,10 +31,11 @@ function rederStoreItem() {
     iconItem.append(imgageItem);
     let buttonItem = document.createElement("button");
     buttonItem.textContent = "Add to cart";
+
     buttonItem.addEventListener("click", function () {
       state.storeItem[i].quantity += 1;
       renderShoppingItem(i);
-      recalcPrice();
+      totalPrice();
     });
     listItem.append(iconItem, buttonItem);
     storeItemList.append(listItem);
@@ -42,6 +43,7 @@ function rederStoreItem() {
 }
 
 function renderShoppingItem(j) {
+  let total = 0;
   let shoppingCartItem = document.createElement("li");
   let itemImage = document.createElement("img");
   itemImage.className = "cart--item-icon";
@@ -64,8 +66,8 @@ function renderShoppingItem(j) {
     state.storeItem[j].quantity = parseInt(itemQuantity.textContent);
     let itemPrice = state.storeItem[j].price * state.storeItem[j].quantity;
     total -= itemPrice;
-    shoppingPrice.textContent = total;
-    recalcPrice();
+    shoppingPrice.textContent = total.toFixed(2);
+    totalPrice();
   });
   shoppingCartItem.append(decreaseItemQuantity);
   let itemQuantity = document.createElement("span");
@@ -82,7 +84,6 @@ function renderShoppingItem(j) {
   });
   shoppingCartItem.append(increaseItemQuantity);
   shoppingCartList.append(shoppingCartItem);
-  console.log(state);
 }
 
 function totalPrice() {
@@ -92,7 +93,7 @@ function totalPrice() {
     total += state.storeItem[i].price * state.storeItem[i].quantity;
   }
 
-  shoppingPrice.textContent = total;
+  shoppingPrice.textContent = total.toFixed(2);
 }
 
 function render() {
