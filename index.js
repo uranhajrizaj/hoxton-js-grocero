@@ -5,7 +5,7 @@ let state = {
     { id: 3, name: "apple", price: 0.45, quantity: 0 },
     { id: 4, name: "apricot", price: 0.35, quantity: 0 },
     { id: 5, name: "avocado", price: 0.45, quantity: 0 },
-    { id: 6, name: "bananas", price: 0.35 , quantity: 0},
+    { id: 6, name: "bananas", price: 0.35, quantity: 0 },
     { id: 7, name: "bell-pepper", price: 0.45, quantity: 0 },
     { id: 8, name: "berry", price: 0.35, quantity: 0 },
     { id: 9, name: "blueberry", price: 0.45, quantity: 0 },
@@ -32,18 +32,16 @@ function rederStoreItem() {
     let buttonItem = document.createElement("button");
     buttonItem.textContent = "Add to cart";
     buttonItem.addEventListener("click", function () {
+      state.storeItem[i].quantity += 1;
       renderShoppingItem(i);
+      recalcPrice();
     });
     listItem.append(iconItem, buttonItem);
     storeItemList.append(listItem);
-
-  
   }
-  
 }
 
 function renderShoppingItem(j) {
-
   let shoppingCartItem = document.createElement("li");
   let itemImage = document.createElement("img");
   itemImage.className = "cart--item-icon";
@@ -61,46 +59,43 @@ function renderShoppingItem(j) {
   decreaseItemQuantity.className = "quantity-btn remove-btn center";
   decreaseItemQuantity.textContent = "-";
   decreaseItemQuantity.addEventListener("click", function () {
-
     itemQuantity.textContent = parseInt(itemQuantity.textContent) - 1;
     if (itemQuantity.textContent === "0") shoppingCartItem.remove();
     state.storeItem[j].quantity = parseInt(itemQuantity.textContent);
-    let itemPrice= state.storeItem[j].price * state.storeItem[j].quantity;
-    
-  
+    let itemPrice = state.storeItem[j].price * state.storeItem[j].quantity;
+    total -= itemPrice;
+    shoppingPrice.textContent = total;
+    recalcPrice();
   });
-
   shoppingCartItem.append(decreaseItemQuantity);
   let itemQuantity = document.createElement("span");
   itemQuantity.className = "quantity-text center";
   itemQuantity.textContent = "1";
-
   shoppingCartItem.append(itemQuantity);
   let increaseItemQuantity = document.createElement("button");
   increaseItemQuantity.className = "quantity-btn add-btn center";
   increaseItemQuantity.textContent = "+";
-
-  let itemPrice=state.storeItem[j].price ;
   increaseItemQuantity.addEventListener("click", function () {
     itemQuantity.textContent = parseInt(itemQuantity.textContent) + 1;
     state.storeItem[j].quantity = parseInt(itemQuantity.textContent);
-    itemPrice= state.storeItem[j].price * state.storeItem[j].quantity;
-    console.log(itemPrice);
+    totalPrice();
   });
-  shoppingPrice.textContent=itemPrice
   shoppingCartItem.append(increaseItemQuantity);
   shoppingCartList.append(shoppingCartItem);
- 
-  let total=0
-  for(let i=0;i<state.storeItem.length;i++){
-    total+=state.storeItem[i].price*state.storeItem[i].quantity
-  
+  console.log(state);
+}
+
+function totalPrice() {
+  let total = 0;
+
+  for (let i = 0; i < state.storeItem.length; i++) {
+    total += state.storeItem[i].price * state.storeItem[i].quantity;
   }
-  shoppingPrice.textContent=total
+
+  shoppingPrice.textContent = total;
 }
 
-
-function render(){
-  rederStoreItem()
+function render() {
+  rederStoreItem();
 }
-render()
+render();
