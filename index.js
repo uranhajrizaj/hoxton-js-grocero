@@ -36,14 +36,11 @@ function rederStoreItem() {
     });
     listItem.append(iconItem, buttonItem);
     storeItemList.append(listItem);
-  //   let itemPrice = state.storeItem[i].price * state.storeItem[i].quantity;
-  // shoppingPrice.textContent = itemPrice;
-  // console.log(itemPrice)
+
   
   }
   
 }
-rederStoreItem();
 
 function renderShoppingItem(j) {
 
@@ -64,10 +61,13 @@ function renderShoppingItem(j) {
   decreaseItemQuantity.className = "quantity-btn remove-btn center";
   decreaseItemQuantity.textContent = "-";
   decreaseItemQuantity.addEventListener("click", function () {
+
     itemQuantity.textContent = parseInt(itemQuantity.textContent) - 1;
     if (itemQuantity.textContent === "0") shoppingCartItem.remove();
     state.storeItem[j].quantity = parseInt(itemQuantity.textContent);
-   
+    let itemPrice= state.storeItem[j].price * state.storeItem[j].quantity;
+    
+  
   });
 
   shoppingCartItem.append(decreaseItemQuantity);
@@ -79,15 +79,28 @@ function renderShoppingItem(j) {
   let increaseItemQuantity = document.createElement("button");
   increaseItemQuantity.className = "quantity-btn add-btn center";
   increaseItemQuantity.textContent = "+";
+
+  let itemPrice=state.storeItem[j].price ;
   increaseItemQuantity.addEventListener("click", function () {
     itemQuantity.textContent = parseInt(itemQuantity.textContent) + 1;
     state.storeItem[j].quantity = parseInt(itemQuantity.textContent);
-
+    itemPrice= state.storeItem[j].price * state.storeItem[j].quantity;
+    console.log(itemPrice);
   });
-
+  shoppingPrice.textContent=itemPrice
   shoppingCartItem.append(increaseItemQuantity);
   shoppingCartList.append(shoppingCartItem);
  
+  let total=0
+  for(let i=0;i<state.storeItem.length;i++){
+    total+=state.storeItem[i].price*state.storeItem[i].quantity
+  
+  }
+  shoppingPrice.textContent=total
 }
 
 
+function render(){
+  rederStoreItem()
+}
+render()
